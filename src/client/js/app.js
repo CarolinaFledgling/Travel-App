@@ -81,7 +81,7 @@ export async function getDataFromApi(e) {
     }
 
     const pixabayData = await getImgPixabay(pixabayApiKey, country)
-    if (pixabayData?.hits?.length) {
+    if (pixabayData && pixabayData.hits && pixabayData.hits.length) {
         imgCountry.setAttribute('src', pixabayData.hits[0].webformatURL)
     }
 }
