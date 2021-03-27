@@ -27,7 +27,9 @@ module.exports = {
                                 targets: "defaults",
                                 exclude: ["@babel/plugin-transform-regenerator"]
                             }]
-                        ]
+                        ],
+                        // If you want to polyfil async, use this one
+                        // plugins: ["@babel/plugin-proposal-async-generator-functions"]
                     }
                 }
             },
