@@ -2,6 +2,15 @@ import './sass/main.scss'
 
 
 import './js/app'
+import {
+    handleNav
+} from './js/handleNav'
+import {
+    getTime
+} from './js/getTime'
+
+
+import './js/app'
 import './js/handleNav'
 
 import {
@@ -15,3 +24,4 @@ import {
 import {
     appUpDate
 } from './js/app' 
+
