@@ -36,7 +36,7 @@ You will need to go :
 - Weatherbit API [here](https://www.weatherbit.io/)
 - Pixabay API [here](https://pixabay.com/api/docs/)
 - Signing up will get you an API key and in 
-- ** create .env file to match api keys in server.js :rocket:
+- **create** .env file to match api keys in server.js :rocket:
 ```
    geonamesUsername ='********'
    pixabayApiKey=20731488-****************
