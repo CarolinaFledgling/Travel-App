@@ -1,29 +1,31 @@
+import {
+    getTime,
+    appUpTime
+} from './getTime'
+
+import {
+    cleanUp
+} from './cleanUp'
+
+import {
+    alertFn,
+    alertMoreDays
+} from './alertFunctions'
+
 const axios = require('axios');
 const inputDestination = document.querySelector('.form__input-search');
 const btnSubmitForm = document.querySelector('.form__input-submit');
-const btnDelete = document.querySelector('.btn-delete');
-//Global variable for coundown date
-const eventDay = document.querySelector('#event-day');
-const eventMonth = document.querySelector('#event-month');
-const eventYear = document.querySelector('#event-year');
-const daysCount = document.querySelector('.days-count');
-const hoursCount = document.querySelector('.hours-count');
-const minutesCount = document.querySelector('.minutes-count');
-const secondsCount = document.querySelector('.seconds-count');
-const counddownTitle = document.querySelector('.countdown__title')
-const timeCards = document.querySelector('.time-cards')
-const warning = document.querySelector('.main-form__warming')
-let usersTime;
-let differenceTime;
-let currentTime;
-let days;
-
+export const btnDelete = document.querySelector('.btn-delete');
+export const counddownTitle = document.querySelector('.countdown__title');
+export const timeCards = document.querySelector('.time-cards');
+const warning = document.querySelector('.main-form__warming');
 // Weather info details
-const temp = document.querySelector('.temp')
-const enterCity = document.querySelector('.city')
-const weatherDescription = document.querySelector('.weather')
-const imgCountry = document.querySelector('.feature-plan__img-city')
+export const temp = document.querySelector('.temp');
+export const enterCity = document.querySelector('.city');
+export const weatherDescription = document.querySelector('.weather');
+export const imgCountry = document.querySelector('.feature-plan__img-city');
 
+<<<<<<< HEAD
 
 // API geonames api
 //what we need latitude, longitude, country
@@ -96,38 +98,133 @@ function getDataFromApi(e) {
             })
     }
 }
+=======
+// Links From APIs 
+
+const urlGeonames = 'http://api.geonames.org/searchJSON?q=';
+const urlCurrentWeatherbit = 'https://api.weatherbit.io/v2.0/current?lat=';
+const urlDailytWeatherbit = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=';
+const urlPixabay = 'https://pixabay.com/api/?key=';
+const urlEndPixabay = '&orientation=horizontal&category=buildings&per_page=3';
 
 
-//Time calculations for days, hours, minutes, seconds from today`s date to our enter date
-const setTime = () => {
-    currentTime = new Date();
-    //the difference between now and the our enter date 
-    differenceTime = usersTime - currentTime;
-    //differenceTime is millisecond
+>>>>>>> asynAwait
 
-    //1000 milisecond is 1 seconds , 1 minutes is 60 seconds , 1 hour is 60 minutes  1 day is 24 hours
-    days = Math.floor(differenceTime / 1000 / 60 / 60 / 24);
-    const hours = Math.floor(differenceTime / 1000 / 60 / 60) % 24;
-    const minutes = Math.floor(differenceTime / 1000 / 60) % 60;
-    const seconds = Math.floor(differenceTime / 1000) % 60;
+export async function getDataFromApi(e) {
 
-    daysCount.textContent = days;
-    hoursCount.textContent = hours;
-    minutesCount.textContent = minutes;
-    secondsCount.textContent = seconds;
+    try {
+        e.preventDefault()
+        const inputDestinationValue = inputDestination.value;
+        enterCity.innerHTML = inputDestination.value;
+
+        if (inputDestinationValue === '') {
+            alertFn()
+            return false;
+        }
+        // receive api key from server side
+        const keys = await fetchApiData()
+        const {
+            geonamesUsername,
+            weatherbitApiKey,
+            pixabayApiKey
+        } = keys
+
+        const location = await getDataFromGeonames(inputDestinationValue, geonamesUsername)
+        showItem()
+        const {
+            days
+        } = getTime()
+        console.log(days)
+
+        if (days > 16 || days < 0) {
+            alertMoreDays()
+            cleanUp()
+            return
+        }
+
+        let weather;
+        const country = location.geonames[0].countryName;
+        const latitude = location.geonames[0].lat
+        const longitude = location.geonames[0].lng
+        console.log(latitude, longitude)
+
+        if (days === -1 || days === 0) {
+            weather = await getCurrentWeather(latitude, longitude, weatherbitApiKey)
+            updateFields(weather.data[0].temp, weather.data[0].weather.description)
+        } else if (days >= 1 && days <= 16) {
+            weather = await getPredictedWeather(latitude, longitude, weatherbitApiKey)
+            updateFields(weather.data[0].temp, weather.data[0].weather.description)
+        }
+
+        const pixabayData = await getImgPixabay(pixabayApiKey, country)
+
+        if (pixabayData && pixabayData.hits && pixabayData.hits.length) {
+            imgCountry.setAttribute('src', pixabayData.hits[0].webformatURL)
+        }
+    } catch (error) {
+        console.log(err, 'something went wrong')
+        warning.textContent = "We are sorry but something went wrong";
+    }
+
 
 }
 
-let intervalId;
-const appUpDate = () => {
-    //our enter date 
-    usersTime = new Date(`${eventMonth.value} ${eventDay.value} ${eventYear.value}`)
-    setTime();
-    clearInterval(intervalId);
-    intervalId = setInterval(setTime, 1000);
+// asynchronous function 
+const fetchApiData = async () => {
+    return fetch('/api_data')
+        .then((res) => res.json())
+
 }
 
-// show Items
+const getDataFromGeonames = async (inputDestinationValue, geonamesUsername) => {
+    const res = await axios.get(`${urlGeonames}${inputDestinationValue}&maxRows=1&username=${geonamesUsername}`)
+    try {
+        console.log(res.data)
+        return res.data
+    } catch (error) {
+        console.log("error with geonames", error)
+    }
+}
+
+
+const getCurrentWeather = async (latitude, longitude, weatherbitApiKey) => {
+    const res = await axios.get(`${urlCurrentWeatherbit}${latitude}&lon=${longitude}&key=${weatherbitApiKey}`)
+    try {
+        console.log(res.data)
+        return res.data
+    } catch (error) {
+        console.log('error with current weather ')
+    }
+}
+
+const getPredictedWeather = async (latitude, longitude, weatherbitApiKey) => {
+    const res = await axios.get(`${urlDailytWeatherbit}${latitude}&lon=${longitude}&key=${weatherbitApiKey}`)
+    try {
+        console.log(res.data)
+        return res.data
+    } catch (error) {
+        console.log('error with predicted weather ')
+    }
+
+}
+
+const getImgPixabay = async (pixabayApiKey, country) => {
+    const res = await axios.get(`${urlPixabay}${pixabayApiKey}&q=${country}${urlEndPixabay}`)
+    try {
+        console.log(res.data)
+        return res.data;
+    } catch (error) {
+        console.log('error with Pixabay ')
+    }
+}
+
+// Function updateFields 
+const updateFields = (temperature, descWeather) => {
+    temp.innerHTML = `${Math.round(temperature)}°C`
+    weatherDescription.innerHTML = descWeather;
+}
+
+// Show Items
 const showItem = () => {
     counddownTitle.classList.add('active')
     timeCards.classList.add('active')
@@ -136,55 +233,8 @@ const showItem = () => {
 }
 
 
-//Delete trip 
-const cleanUp = () => {
-    temp.innerHTML = "";
-    weatherDescription.innerHTML = "";
-    imgCountry.src = "";
-    enterCity.innerHTML = "";
-    counddownTitle.classList.remove('active');
-    timeCards.classList.remove('active');
-    btnDelete.classList.remove('active')
-    imgCountry.classList.remove('active')
-
-}
-
-
-// alert NO destination
-function alertFn() {
-    alert("😊 Please, enter your a travel destination ✈️ and the start date for travel 📅");
-}
-// alert with days
-function alertFnDays() {
-    alert("🗓️ Sorry, but this app only covers weather 16 days in advance.\n Please enter a valid date. 🙈");
-}
-
-
-// Function post date to my server 
-function postData(url, data) {
-    return fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': "application/json"
-        },
-        body: JSON.stringify(data) // strinfigify convert object into a string 
-    });
-};
-
-//  Function updateUI
-const updateUI = () => {
-    fetch('/all')
-        .then(res => res.json())
-        .then((json) => {
-            temp.innerHTML = `${Math.round(json.temp)}°C`
-            weatherDescription.innerHTML = json.weatherDescription;
-        })
-}
-
-
-
 btnSubmitForm.addEventListener('click', getDataFromApi)
+<<<<<<< HEAD
 btnSubmitForm.addEventListener('click', appUpDate)
 btnDelete.addEventListener('click', cleanUp)
 
@@ -197,3 +247,7 @@ export {
     alertFn,
     alertFnDays,
 }
+=======
+btnSubmitForm.addEventListener('click', appUpTime)
+btnDelete.addEventListener('click', cleanUp)
+>>>>>>> asynAwait
