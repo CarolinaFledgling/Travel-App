@@ -13,6 +13,7 @@ import {
 } from './alertFunctions'
 
 const axios = require('axios');
+const spinner = document.querySelector('.spinner')
 const inputDestination = document.querySelector('.form__input-search');
 const btnSubmitForm = document.querySelector('.form__input-submit');
 export const btnDelete = document.querySelector('.btn-delete');
@@ -39,7 +40,6 @@ export async function getDataFromApi(e) {
     try {
         e.preventDefault()
         const inputDestinationValue = inputDestination.value;
-        enterCity.innerHTML = inputDestination.value.toUpperCase();
 
         if (inputDestinationValue === '') {
             alertFn()
@@ -52,9 +52,11 @@ export async function getDataFromApi(e) {
             weatherbitApiKey,
             pixabayApiKey
         } = keys
+        
+        showLoading()
 
+        // fetching data
         const location = await getDataFromGeonames(inputDestinationValue, geonamesUsername)
-        showItem()
         const {
             days
         } = getTime()
@@ -65,6 +67,8 @@ export async function getDataFromApi(e) {
             cleanUp()
             return
         }
+        showItem()
+        enterCity.innerHTML = inputDestination.value.toUpperCase();
 
         let weather;
         const country = location.geonames[0].countryName;
@@ -85,6 +89,7 @@ export async function getDataFromApi(e) {
         if (pixabayData && pixabayData.hits && pixabayData.hits.length) {
             imgCountry.setAttribute('src', pixabayData.hits[0].webformatURL)
         }
+        hideLoading()
     } catch (error) {
         console.log(err, 'something went wrong')
         warning.textContent = "We are sorry but something went wrong";
@@ -155,10 +160,16 @@ const showItem = () => {
     imgCountry.classList.add('active')
 }
 
+// show and hide loading 
+const showLoading = () => {
+    spinner.classList.add('spinner--visible')
+}
+
+const hideLoading = () => {
+    spinner.classList.remove('spinner--visible')
+}
+
 
 btnSubmitForm.addEventListener('click', getDataFromApi)
-btnSubmitForm.addEventListener('click',appUpTime)
+btnSubmitForm.addEventListener('click', appUpTime)
 btnDelete.addEventListener('click', cleanUp)
-
-
-
