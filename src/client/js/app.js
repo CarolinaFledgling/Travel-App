@@ -33,9 +33,7 @@ const urlDailytWeatherbit = 'https://api.weatherbit.io/v2.0/forecast/daily?lat='
 const urlPixabay = 'https://pixabay.com/api/?key=';
 const urlEndPixabay = '&orientation=horizontal&category=buildings&per_page=3';
 
-// Problemy:
-// zauważyłam że ponwonie zmianie daty , ona od razu sie aktualizuje nie czeka na klikniecie guzika ?
-// nie działa mi ten warunek ?? linjka 66
+
 
 export async function getDataFromApi(e) {
 
@@ -63,7 +61,6 @@ export async function getDataFromApi(e) {
         } = getTime()
         console.log(days)
 
-        // nie działa mi ten warunek ??
         if (days > 16 || days < 0) {
             alertMoreDays()
             cleanUp()
