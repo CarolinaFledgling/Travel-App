@@ -60,8 +60,6 @@ export const setTime = () => {
 // }
 
 
-
-
 export const appUpTime = () => {
     usersTime = new Date(`${eventMonth.value} ${eventDay.value} ${eventYear.value}`);
     setTime();

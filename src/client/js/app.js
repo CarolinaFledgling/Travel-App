@@ -39,7 +39,7 @@ export async function getDataFromApi(e) {
     try {
         e.preventDefault()
         const inputDestinationValue = inputDestination.value;
-        enterCity.innerHTML = inputDestination.value;
+        enterCity.innerHTML = inputDestination.value.toUpperCase();
 
         if (inputDestinationValue === '') {
             alertFn()
@@ -157,15 +157,8 @@ const showItem = () => {
 
 
 btnSubmitForm.addEventListener('click', getDataFromApi)
-btnSubmitForm.addEventListener('click', appUpDate)
+btnSubmitForm.addEventListener('click',appUpTime)
 btnDelete.addEventListener('click', cleanUp)
 
 
 
-export {
-    getDataFromApi,
-    appUpDate,
-    setTime,
-    alertFn,
-    alertFnDays,
-}
