@@ -35,7 +35,7 @@ You will need to go :
 - Geoname API [here](http://www.geonames.org/)
 - Weatherbit API [here](https://www.weatherbit.io/)
 - Pixabay API [here](https://pixabay.com/api/docs/)
-- Signing up will get you an API key and in 
+- Signing up will get you an API key 
 - **create** .env file to match api keys in server.js :rocket:
 ```
    geonamesUsername ='********'
