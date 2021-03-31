@@ -2,15 +2,16 @@
 #  Travel app
 
 ## Description 
- It is a Travel app which gives information about the destination you want to travel and help you plan your trip better.
+It is a Travel app which gives weather information, image about the destination you want to travel and Countdown Timer that counts down in seconds, minutes, hours and days to the date of your travel. 
 
 ## The goal of this project is to practice:
 
+* Vanilla JS
 * Setting up Webpack
 * Sass styles
 * Webpack Loaders and Plugins
 * Creating layouts and page design
-* Service workers
+* Setup localhost server
 * Using APIs and creating requests to external URLs
 
 
