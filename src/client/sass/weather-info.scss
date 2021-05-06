@@ -1,0 +1,25 @@
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    &__details {
+        margin: 1rem 0;
+    }
+
+    &__icon {
+        margin: 1rem 0;
+    }
+}
+
+.info {
+    margin: 0.5rem 0
+}
+
+.city {
+    margin: 1rem 0;
+    font-weight: bold;
+    letter-spacing: .3px;
+}

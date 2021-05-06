@@ -1,0 +1,52 @@
+.countdown {
+    text-align: center;
+    padding: 1rem;
+
+    &__title {
+        visibility: hidden;
+        margin-bottom: 2rem;
+    }
+}
+
+// class for active and not active items 
+.active {
+    visibility: visible;
+}
+
+
+.time-cards {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin: 1rem 0;
+    visibility: hidden;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0px 3px 13px -3px rgba(0, 0, 0, 0.32);
+    font-size: 1.4rem;
+    border: 0px solid transparent;
+    border-radius: 5px;
+    margin: 1rem;
+}
+
+.number {
+    margin: 1rem 0;
+    font-weight: 300;
+    font-size: 2rem;
+}
+
+.card-title {
+    text-align: center;
+}
+
+// class for active and not active items 
+.active {
+    visibility: visible;
+}
