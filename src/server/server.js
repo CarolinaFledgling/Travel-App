@@ -26,7 +26,6 @@ const port = 3000
 const server = app.listen(port, listening)
 
 function listening() {
-    // console.log(server);
     console.log(`running on localhost: ${port}`)
 }
 
@@ -50,7 +49,6 @@ function sendApiKey(req, res) {
         weatherbitApiKey: weatherbitApiKey,
         pixabayApiKey: pixabayApiKey,
     })
-    res.send(console.log('hello I`m your APi Keys '))
 }
 
 // Post route
@@ -70,7 +68,6 @@ app.get('/all', sendData)
 
 function sendData(req, res) {
     res.send(projectData)
-    res.send(console.log('hello'))
 }
 
 // for test in JEST

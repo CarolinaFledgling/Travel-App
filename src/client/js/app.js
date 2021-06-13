@@ -47,7 +47,6 @@ export async function getDataFromApi(e) {
             geonamesUsername
         )
         const { days } = getTime()
-        console.log(days)
 
         if (days > 16 || days < 0) {
             alertMoreDays()
@@ -61,7 +60,6 @@ export async function getDataFromApi(e) {
         const country = location.geonames[0].countryName
         const latitude = location.geonames[0].lat
         const longitude = location.geonames[0].lng
-        console.log(latitude, longitude)
 
         if (days === -1 || days === 0) {
             weather = await getCurrentWeather(
@@ -92,7 +90,7 @@ export async function getDataFromApi(e) {
         }
         hideLoading()
     } catch (error) {
-        console.log(err, 'something went wrong')
+        console.log('something went wrong', err)
         warning.textContent = 'We are sorry but something went wrong'
     }
 }
@@ -107,7 +105,6 @@ const getDataFromGeonames = async (inputDestinationValue, geonamesUsername) => {
         `${urlGeonames}${inputDestinationValue}&maxRows=1&username=${geonamesUsername}`
     )
     try {
-        console.log(res.data)
         return res.data
     } catch (error) {
         console.log('error with geonames', error)
@@ -119,10 +116,9 @@ const getCurrentWeather = async (latitude, longitude, weatherbitApiKey) => {
         `${urlCurrentWeatherbit}${latitude}&lon=${longitude}&key=${weatherbitApiKey}`
     )
     try {
-        console.log(res.data)
         return res.data
     } catch (error) {
-        console.log('error with current weather ')
+        console.log('error with current weather', error)
     }
 }
 
@@ -131,10 +127,9 @@ const getPredictedWeather = async (latitude, longitude, weatherbitApiKey) => {
         `${urlDailytWeatherbit}${latitude}&lon=${longitude}&key=${weatherbitApiKey}`
     )
     try {
-        console.log(res.data)
         return res.data
     } catch (error) {
-        console.log('error with predicted weather ')
+        console.log('error with predicted weather ', error)
     }
 }
 
@@ -143,7 +138,6 @@ const getImgPixabay = async (pixabayApiKey, country) => {
         `${urlPixabay}${pixabayApiKey}&q=${country}${urlEndPixabay}`
     )
     try {
-        console.log(res.data)
         return res.data
     } catch (error) {
         console.log('error with Pixabay ')
