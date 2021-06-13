@@ -13,31 +13,59 @@ let usersTime
 // id for interval Coundown seconds
 let intervalId
 
-export const getTime = () => {
+export const getValidationTime = () => {
     const currentTime = new Date()
+    currentTime.setHours(0)
+    currentTime.setMinutes(0)
+    currentTime.setSeconds(0)
+    currentTime.setMilliseconds(0)
+
     //the difference between now and the our enter date
     const differenceTime = usersTime - currentTime
     //differenceTime is millisecond
 
     //1000 milisecond is 1 seconds , 1 minutes is 60 seconds , 1 hour is 60 minutes  1 day is 24 hours
     //Time calculations for days, hours, minutes, seconds from today`s date to our enter date
-    const days = Math.floor(differenceTime / 1000 / 60 / 60 / 24)
+    const days = differenceTime / 1000 / 60 / 60 / 24
     const hours = Math.floor(differenceTime / 1000 / 60 / 60) % 24
     const minutes = Math.floor(differenceTime / 1000 / 60) % 60
     const seconds = Math.floor(differenceTime / 1000) % 60
 
-    console.log('[debug] getTime', {
+    return {
+        days,
+        hours,
+        minutes,
+        seconds,
         currentTime,
-        differenceTime,
-        usersTime,
-        result: {
-            days,
-            hours,
-            minutes,
-            seconds,
-            currentTime,
-        },
-    })
+    }
+}
+
+export const getTime = () => {
+    const currentTime = new Date()
+
+    //the difference between now and the our enter date
+    const differenceTime = usersTime - currentTime
+    //differenceTime is millisecond
+
+    //1000 milisecond is 1 seconds , 1 minutes is 60 seconds , 1 hour is 60 minutes  1 day is 24 hours
+    //Time calculations for days, hours, minutes, seconds from today`s date to our enter date
+    let days = differenceTime / 1000 / 60 / 60 / 24
+    let hours = Math.floor(differenceTime / 1000 / 60 / 60) % 24
+    let minutes = Math.floor(differenceTime / 1000 / 60) % 60
+    let seconds = Math.floor(differenceTime / 1000) % 60
+
+    // Zero hours/minutes/seconds if day difference is less then 24h. So between 0 and -0.9999....
+    if (days <= 0 && days > -1) {
+        hours = 0
+        minutes = 0
+        seconds = 0
+    }
+
+    if (days < 0) {
+        days = Math.ceil(days)
+    } else {
+        days = Math.floor(days)
+    }
 
     return {
         days,
@@ -65,14 +93,6 @@ export const appUpTime = () => {
     usersTime = new Date(
         `${eventMonth.value} ${eventDay.value} ${eventYear.value}`
     )
-    console.log('[debug] appUpTime', {
-        usersTime,
-        htmlData: {
-            eventMonth,
-            eventDay,
-            eventYear,
-        },
-    })
     setTime()
     clearInterval(intervalId)
     intervalId = setInterval(setTime, 1000)

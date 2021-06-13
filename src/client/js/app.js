@@ -1,4 +1,4 @@
-import { getTime, appUpTime } from './getTime'
+import { getTime, appUpTime, getValidationTime } from './getTime'
 
 import { cleanUp } from './cleanUp'
 
@@ -46,7 +46,7 @@ export async function getDataFromApi(e) {
             inputDestinationValue,
             geonamesUsername
         )
-        const { days } = getTime()
+        const { days } = getValidationTime()
 
         if (days > 16 || days < 0) {
             alertMoreDays()
@@ -170,6 +170,10 @@ const showLoading = () => {
 const hideLoading = () => {
     spinner.classList.remove('spinner--visible')
 }
+
+const today = new Date()
+document.querySelector('.date__day').value = today.getDate()
+document.querySelector('.date__month').value = today.getMonth() + 1
 
 btnSubmitForm.addEventListener('click', getDataFromApi)
 btnSubmitForm.addEventListener('click', appUpTime)
