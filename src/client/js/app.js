@@ -1,65 +1,52 @@
-import {
-    getTime,
-    appUpTime
-} from './getTime'
+import { getTime, appUpTime } from './getTime'
 
-import {
-    cleanUp
-} from './cleanUp'
+import { cleanUp } from './cleanUp'
 
-import {
-    alertFn,
-    alertMoreDays
-} from './alertFunctions'
+import { alertFn, alertMoreDays } from './alertFunctions'
 
-const axios = require('axios');
+const axios = require('axios')
 const spinner = document.querySelector('.spinner')
-const inputDestination = document.querySelector('.form__input-search');
-const btnSubmitForm = document.querySelector('.form__input-submit');
-export const btnDelete = document.querySelector('.btn-delete');
-export const counddownTitle = document.querySelector('.countdown__title');
-export const timeCards = document.querySelector('.time-cards');
-const warning = document.querySelector('.main-form__warming');
+const inputDestination = document.querySelector('.form__input-search')
+const btnSubmitForm = document.querySelector('.form__input-submit')
+export const btnDelete = document.querySelector('.btn-delete')
+export const counddownTitle = document.querySelector('.countdown__title')
+export const timeCards = document.querySelector('.time-cards')
+const warning = document.querySelector('.main-form__warming')
 // Weather info details
-export const temp = document.querySelector('.temp');
-export const enterCity = document.querySelector('.city');
-export const weatherDescription = document.querySelector('.weather');
-export const imgCountry = document.querySelector('.feature-plan__img-city');
+export const temp = document.querySelector('.temp')
+export const enterCity = document.querySelector('.city')
+export const weatherDescription = document.querySelector('.weather')
+export const imgCountry = document.querySelector('.feature-plan__img-city')
 
-// Links From APIs 
+// Links From APIs
 
-const urlGeonames = 'http://api.geonames.org/searchJSON?q=';
-const urlCurrentWeatherbit = 'https://api.weatherbit.io/v2.0/current?lat=';
-const urlDailytWeatherbit = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=';
-const urlPixabay = 'https://pixabay.com/api/?key=';
-const urlEndPixabay = '&orientation=horizontal&category=buildings&per_page=3';
-
+const urlGeonames = 'http://api.geonames.org/searchJSON?q='
+const urlCurrentWeatherbit = 'https://api.weatherbit.io/v2.0/current?lat='
+const urlDailytWeatherbit = 'https://api.weatherbit.io/v2.0/forecast/daily?lat='
+const urlPixabay = 'https://pixabay.com/api/?key='
+const urlEndPixabay = '&orientation=horizontal&category=buildings&per_page=3'
 
 export async function getDataFromApi(e) {
-
     try {
         e.preventDefault()
-        const inputDestinationValue = inputDestination.value;
+        const inputDestinationValue = inputDestination.value
 
         if (inputDestinationValue === '') {
             alertFn()
-            return false;
+            return false
         }
         // receive api key from server side
         const keys = await fetchApiData()
-        const {
-            geonamesUsername,
-            weatherbitApiKey,
-            pixabayApiKey
-        } = keys
-        
+        const { geonamesUsername, weatherbitApiKey, pixabayApiKey } = keys
+
         showLoading()
 
         // fetching data
-        const location = await getDataFromGeonames(inputDestinationValue, geonamesUsername)
-        const {
-            days
-        } = getTime()
+        const location = await getDataFromGeonames(
+            inputDestinationValue,
+            geonamesUsername
+        )
+        const { days } = getTime()
         console.log(days)
 
         if (days > 16 || days < 0) {
@@ -68,20 +55,34 @@ export async function getDataFromApi(e) {
             return
         }
         showItem()
-        enterCity.innerHTML = inputDestination.value.toUpperCase();
+        enterCity.innerHTML = inputDestination.value.toUpperCase()
 
-        let weather;
-        const country = location.geonames[0].countryName;
+        let weather
+        const country = location.geonames[0].countryName
         const latitude = location.geonames[0].lat
         const longitude = location.geonames[0].lng
         console.log(latitude, longitude)
 
         if (days === -1 || days === 0) {
-            weather = await getCurrentWeather(latitude, longitude, weatherbitApiKey)
-            updateFields(weather.data[0].temp, weather.data[0].weather.description)
+            weather = await getCurrentWeather(
+                latitude,
+                longitude,
+                weatherbitApiKey
+            )
+            updateFields(
+                weather.data[0].temp,
+                weather.data[0].weather.description
+            )
         } else if (days >= 1 && days <= 16) {
-            weather = await getPredictedWeather(latitude, longitude, weatherbitApiKey)
-            updateFields(weather.data[0].temp, weather.data[0].weather.description)
+            weather = await getPredictedWeather(
+                latitude,
+                longitude,
+                weatherbitApiKey
+            )
+            updateFields(
+                weather.data[0].temp,
+                weather.data[0].weather.description
+            )
         }
 
         const pixabayData = await getImgPixabay(pixabayApiKey, country)
@@ -92,31 +93,31 @@ export async function getDataFromApi(e) {
         hideLoading()
     } catch (error) {
         console.log(err, 'something went wrong')
-        warning.textContent = "We are sorry but something went wrong";
+        warning.textContent = 'We are sorry but something went wrong'
     }
-
 }
 
-// asynchronous function 
+// asynchronous function
 const fetchApiData = async () => {
-    return fetch('/api_data')
-        .then((res) => res.json())
-
+    return fetch('/api_data').then((res) => res.json())
 }
 
 const getDataFromGeonames = async (inputDestinationValue, geonamesUsername) => {
-    const res = await axios.get(`${urlGeonames}${inputDestinationValue}&maxRows=1&username=${geonamesUsername}`)
+    const res = await axios.get(
+        `${urlGeonames}${inputDestinationValue}&maxRows=1&username=${geonamesUsername}`
+    )
     try {
         console.log(res.data)
         return res.data
     } catch (error) {
-        console.log("error with geonames", error)
+        console.log('error with geonames', error)
     }
 }
 
-
 const getCurrentWeather = async (latitude, longitude, weatherbitApiKey) => {
-    const res = await axios.get(`${urlCurrentWeatherbit}${latitude}&lon=${longitude}&key=${weatherbitApiKey}`)
+    const res = await axios.get(
+        `${urlCurrentWeatherbit}${latitude}&lon=${longitude}&key=${weatherbitApiKey}`
+    )
     try {
         console.log(res.data)
         return res.data
@@ -126,30 +127,33 @@ const getCurrentWeather = async (latitude, longitude, weatherbitApiKey) => {
 }
 
 const getPredictedWeather = async (latitude, longitude, weatherbitApiKey) => {
-    const res = await axios.get(`${urlDailytWeatherbit}${latitude}&lon=${longitude}&key=${weatherbitApiKey}`)
+    const res = await axios.get(
+        `${urlDailytWeatherbit}${latitude}&lon=${longitude}&key=${weatherbitApiKey}`
+    )
     try {
         console.log(res.data)
         return res.data
     } catch (error) {
         console.log('error with predicted weather ')
     }
-
 }
 
 const getImgPixabay = async (pixabayApiKey, country) => {
-    const res = await axios.get(`${urlPixabay}${pixabayApiKey}&q=${country}${urlEndPixabay}`)
+    const res = await axios.get(
+        `${urlPixabay}${pixabayApiKey}&q=${country}${urlEndPixabay}`
+    )
     try {
         console.log(res.data)
-        return res.data;
+        return res.data
     } catch (error) {
         console.log('error with Pixabay ')
     }
 }
 
-// Function updateFields 
+// Function updateFields
 const updateFields = (temperature, descWeather) => {
     temp.innerHTML = `${Math.round(temperature)}°C`
-    weatherDescription.innerHTML = descWeather;
+    weatherDescription.innerHTML = descWeather
 }
 
 // Show Items
@@ -160,7 +164,7 @@ const showItem = () => {
     imgCountry.classList.add('active')
 }
 
-// show and hide loading 
+// show and hide loading
 const showLoading = () => {
     spinner.classList.add('spinner--visible')
 }
@@ -168,7 +172,6 @@ const showLoading = () => {
 const hideLoading = () => {
     spinner.classList.remove('spinner--visible')
 }
-
 
 btnSubmitForm.addEventListener('click', getDataFromApi)
 btnSubmitForm.addEventListener('click', appUpTime)
