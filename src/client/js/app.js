@@ -97,6 +97,10 @@ export async function getDataFromApi(e) {
 
 // asynchronous function
 const fetchApiData = async () => {
+    const isNetlify = window.location.host.includes('.netlify.app')
+    if (isNetlify) {
+        return fetch('/.netlify/functions/api_data').then((res) => res.json())
+    }
     return fetch('/api_data').then((res) => res.json())
 }
 
