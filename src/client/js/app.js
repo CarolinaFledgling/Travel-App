@@ -20,7 +20,7 @@ export const imgCountry = document.querySelector('.feature-plan__img-city')
 
 // Links From APIs
 
-const urlGeonames = 'http://api.geonames.org/searchJSON?q='
+const urlGeonames = 'https://secure.geonames.org/searchJSON?q='
 const urlCurrentWeatherbit = 'https://api.weatherbit.io/v2.0/current?lat='
 const urlDailytWeatherbit = 'https://api.weatherbit.io/v2.0/forecast/daily?lat='
 const urlPixabay = 'https://pixabay.com/api/?key='
