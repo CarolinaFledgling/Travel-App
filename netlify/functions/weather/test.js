@@ -4,8 +4,8 @@ exports.handler = async function (event, context) {
     const combined = `${nodeVersion}-${weatherApi}`
     return {
         statusCode: 200,
-        body: {
+        body: JSON.stringify({
             message: combined,
-        },
+        }),
     }
 }
