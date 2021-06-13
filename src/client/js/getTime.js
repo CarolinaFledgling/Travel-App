@@ -26,6 +26,19 @@ export const getTime = () => {
     const minutes = Math.floor(differenceTime / 1000 / 60) % 60
     const seconds = Math.floor(differenceTime / 1000) % 60
 
+    console.log('[debug] getTime', {
+        currentTime,
+        differenceTime,
+        usersTime,
+        result: {
+            days,
+            hours,
+            minutes,
+            seconds,
+            currentTime,
+        },
+    })
+
     return {
         days,
         hours,
@@ -52,6 +65,14 @@ export const appUpTime = () => {
     usersTime = new Date(
         `${eventMonth.value} ${eventDay.value} ${eventYear.value}`
     )
+    console.log('[debug] appUpTime', {
+        usersTime,
+        htmlData: {
+            eventMonth,
+            eventDay,
+            eventYear,
+        },
+    })
     setTime()
     clearInterval(intervalId)
     intervalId = setInterval(setTime, 1000)
