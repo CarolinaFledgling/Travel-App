@@ -85,14 +85,12 @@ export const setTime = () => {
     secondsCount.textContent = seconds
 }
 
-// export const getUserTimeFromForm = () => {
-//     return new Date(`${eventMonth.value} ${eventDay.value} ${eventYear.value}`)
-// }
-
 export const appUpTime = () => {
-    usersTime = new Date(
-        `${eventMonth.value} ${eventDay.value} ${eventYear.value}`
-    )
+    const year = parseInt(eventYear.value)
+    const month = parseInt(eventMonth.value) - 1
+    const day = parseInt(eventDay.value)
+
+    usersTime = new Date(year, month, day)
     setTime()
     clearInterval(intervalId)
     intervalId = setInterval(setTime, 1000)
