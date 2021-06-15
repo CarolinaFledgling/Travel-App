@@ -51,28 +51,5 @@ function sendApiKey(req, res) {
     })
 }
 
-// Post route
-
-app.post('/add', postData)
-
-function postData(req, res) {
-    projectData = req.body
-    res.send({
-        message: 'post recived',
-    })
-    console.log('dane z Frontu', projectData)
-}
-
-//GET route
-app.get('/all', sendData)
-
-function sendData(req, res) {
-    res.send(projectData)
-}
-
-// for test in JEST
-app.get('/', (req, res) => {
-    res.status(200).send('Hello World!')
-})
 
 module.exports = app
