@@ -1,0 +1,43 @@
+// MAIN
+
+
+
+.feature-plan {
+    height: auto;
+    margin: 1rem;
+    padding: 1em;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    column-gap: 1rem;
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        // align-items: center;
+    }
+
+    &__img-city {
+        width: 100%;
+        box-shadow: 0px 7px 5px -2px rgba(0, 0, 0, 0.32);
+        visibility: hidden;
+    }
+}
+
+
+// Media
+
+@media(max-width:768px) {
+    .feature-plan {
+        grid-template-columns: repeat(1, 1fr);
+        justify-content: center;
+        align-items: center;
+        margin: 0 1rem;
+        padding: 0;
+    }
+}
+
+.active {
+    visibility: visible;
+}
