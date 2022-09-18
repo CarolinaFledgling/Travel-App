@@ -20,7 +20,7 @@ cd into your new folder and run:
 
 `npm install`
 `npm run start`
-go to http://localhost:3000/
+go to http://localhost:4000/
 
 To run the project on the development webpack server, open the terminal in the root directory and run the command
 `npm run build-dev`
